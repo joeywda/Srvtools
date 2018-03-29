@@ -281,7 +281,7 @@ namespace Srvtools
             this.NavigatorUsers.PreQueryField = ((System.Collections.Generic.List<string>)(resources.GetObject("NavigatorUsers.PreQueryField")));
             this.NavigatorUsers.PreQueryValue = ((System.Collections.Generic.List<string>)(resources.GetObject("NavigatorUsers.PreQueryValue")));
             this.NavigatorUsers.PrintItem = this.bindingNavigatorPrintItem;
-            this.NavigatorUsers.QueryFont = new System.Drawing.Font("冼极", 9F);
+            this.NavigatorUsers.QueryFont = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.NavigatorUsers.QueryKeepCondition = false;
             this.NavigatorUsers.QueryMargin = new System.Drawing.Printing.Margins(100, 30, 10, 30);
             this.NavigatorUsers.QueryMode = Srvtools.InfoNavigator.QueryModeType.ClientQuery;
@@ -554,7 +554,7 @@ namespace Srvtools
             // bindingNavigatorCountItem
             // 
             this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(41, 22);
+            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(37, 22);
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.bindingNavigatorCountItem.ToolTipText = "count";
@@ -606,7 +606,7 @@ namespace Srvtools
             this.dgViewUsers.DataSource = this.bsUsers;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("PMingLiU", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -618,7 +618,7 @@ namespace Srvtools
             this.dgViewUsers.Name = "dgViewUsers";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("PMingLiU", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -632,8 +632,8 @@ namespace Srvtools
             this.dgViewUsers.TotalActive = false;
             this.dgViewUsers.TotalBackColor = System.Drawing.SystemColors.Info;
             this.dgViewUsers.TotalCaption = null;
-            this.dgViewUsers.TotalCaptionFont = new System.Drawing.Font("冼极", 9F);
-            this.dgViewUsers.TotalFont = new System.Drawing.Font("冼极", 9F);
+            this.dgViewUsers.TotalCaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.dgViewUsers.TotalFont = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.dgViewUsers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgViewUsers_CellValueChanged);
             this.dgViewUsers.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dgViewUsers_UserDeletingRow);
             // 
@@ -707,7 +707,7 @@ namespace Srvtools
             this.lblPassword.AutoSize = true;
             this.lblPassword.Location = new System.Drawing.Point(69, 310);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(59, 12);
+            this.lblPassword.Size = new System.Drawing.Size(51, 12);
             this.lblPassword.TabIndex = 9;
             this.lblPassword.Text = "Password:";
             // 
@@ -717,7 +717,7 @@ namespace Srvtools
             this.txtPassword.Location = new System.Drawing.Point(126, 307);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(80, 21);
+            this.txtPassword.Size = new System.Drawing.Size(80, 22);
             this.txtPassword.TabIndex = 8;
             this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPassword_KeyPress);
             this.txtPassword.Leave += new System.EventHandler(this.txtPassword_Leave);
@@ -814,7 +814,7 @@ namespace Srvtools
             this.NavigatorGroups.PreQueryField = ((System.Collections.Generic.List<string>)(resources.GetObject("NavigatorGroups.PreQueryField")));
             this.NavigatorGroups.PreQueryValue = ((System.Collections.Generic.List<string>)(resources.GetObject("NavigatorGroups.PreQueryValue")));
             this.NavigatorGroups.PrintItem = this.bindingNavigatorPrintItem2;
-            this.NavigatorGroups.QueryFont = new System.Drawing.Font("冼极", 9F);
+            this.NavigatorGroups.QueryFont = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.NavigatorGroups.QueryKeepCondition = false;
             this.NavigatorGroups.QueryMargin = new System.Drawing.Printing.Margins(100, 30, 10, 30);
             this.NavigatorGroups.QueryMode = Srvtools.InfoNavigator.QueryModeType.ClientQuery;
@@ -1089,7 +1089,7 @@ namespace Srvtools
             // bindingNavigatorCountItem2
             // 
             this.bindingNavigatorCountItem2.Name = "bindingNavigatorCountItem2";
-            this.bindingNavigatorCountItem2.Size = new System.Drawing.Size(41, 22);
+            this.bindingNavigatorCountItem2.Size = new System.Drawing.Size(37, 22);
             this.bindingNavigatorCountItem2.Text = "of {0}";
             this.bindingNavigatorCountItem2.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.bindingNavigatorCountItem2.ToolTipText = "count";
@@ -1111,7 +1111,7 @@ namespace Srvtools
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtChoosed.Location = new System.Drawing.Point(487, 67);
             this.txtChoosed.Name = "txtChoosed";
-            this.txtChoosed.Size = new System.Drawing.Size(95, 21);
+            this.txtChoosed.Size = new System.Drawing.Size(95, 22);
             this.txtChoosed.TabIndex = 36;
             this.txtChoosed.TextChanged += new System.EventHandler(this.txtChoosed_TextChanged);
             // 
@@ -1121,7 +1121,7 @@ namespace Srvtools
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAll.Location = new System.Drawing.Point(352, 67);
             this.txtAll.Name = "txtAll";
-            this.txtAll.Size = new System.Drawing.Size(95, 21);
+            this.txtAll.Size = new System.Drawing.Size(95, 22);
             this.txtAll.TabIndex = 35;
             this.txtAll.TextChanged += new System.EventHandler(this.txtAll_TextChanged);
             // 
@@ -1154,7 +1154,7 @@ namespace Srvtools
             this.labelChoosed.AutoSize = true;
             this.labelChoosed.Location = new System.Drawing.Point(492, 40);
             this.labelChoosed.Name = "labelChoosed";
-            this.labelChoosed.Size = new System.Drawing.Size(77, 12);
+            this.labelChoosed.Size = new System.Drawing.Size(68, 12);
             this.labelChoosed.TabIndex = 32;
             this.labelChoosed.Text = "labelChoosed";
             // 
@@ -1164,7 +1164,7 @@ namespace Srvtools
             this.labelUnchecked.AutoSize = true;
             this.labelUnchecked.Location = new System.Drawing.Point(358, 40);
             this.labelUnchecked.Name = "labelUnchecked";
-            this.labelUnchecked.Size = new System.Drawing.Size(89, 12);
+            this.labelUnchecked.Size = new System.Drawing.Size(79, 12);
             this.labelUnchecked.TabIndex = 31;
             this.labelUnchecked.Text = "labelUnchecked";
             // 
@@ -1350,7 +1350,7 @@ namespace Srvtools
             this.dgViewGroups.DataSource = this.bsGroups;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("PMingLiU", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -1368,8 +1368,8 @@ namespace Srvtools
             this.dgViewGroups.TotalActive = false;
             this.dgViewGroups.TotalBackColor = System.Drawing.SystemColors.Info;
             this.dgViewGroups.TotalCaption = null;
-            this.dgViewGroups.TotalCaptionFont = new System.Drawing.Font("冼极", 9F);
-            this.dgViewGroups.TotalFont = new System.Drawing.Font("冼极", 9F);
+            this.dgViewGroups.TotalCaptionFont = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.dgViewGroups.TotalFont = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.dgViewGroups.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgViewGroups_CellValueChanged);
             this.dgViewGroups.SelectionChanged += new System.EventHandler(this.dgViewGroups_SelectionChanged);
             this.dgViewGroups.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dgViewGroups_UserDeletingRow);
@@ -1411,13 +1411,16 @@ namespace Srvtools
             this.infoRefVal1.AutoLocate = true;
             this.infoRefVal1.Caption = null;
             this.infoRefVal1.CheckData = true;
+            this.infoRefVal1.checkDataSpace = false;
             this.infoRefVal1.DataSource = this.bsUsers;
             this.infoRefVal1.DisplayMember = "USERNAME";
             this.infoRefVal1.EditingDisplayMember = "USERID";
             this.infoRefVal1.FLookupValue = "";
-            this.infoRefVal1.Font = new System.Drawing.Font("冼极", 9F);
+            this.infoRefVal1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.infoRefVal1.FormSize = new System.Drawing.Size(410, 255);
             this.infoRefVal1.IgnoreCase = false;
+            this.infoRefVal1.LinkDisplayMember = null;
+            this.infoRefVal1.LinkObject = null;
             this.infoRefVal1.MultiLanguage = false;
             this.infoRefVal1.PacketRecords = 100;
             this.infoRefVal1.RefByWhere = false;
@@ -1425,6 +1428,7 @@ namespace Srvtools
             this.infoRefVal1.SelectCommand = null;
             this.infoRefVal1.SelectTop = null;
             this.infoRefVal1.Styles = Srvtools.InfoRefVal.ShowStyle.gridStyle;
+            this.infoRefVal1.TextboxSelectType = false;
             this.infoRefVal1.ValueMember = "USERID";
             this.infoRefVal1.WhereItemCache = true;
             // 

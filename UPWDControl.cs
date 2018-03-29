@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Xml;
 using System.Drawing;
+using System.Data.SqlClient;
 
 namespace Srvtools
 {
@@ -85,6 +86,23 @@ namespace Srvtools
                 }
                 else if (myRet[1].ToString() == "O")
                 {
+                    //SamWu 2018/3/6  , 將密碼之明細存入 DESCRIPTION 
+                    string SqlString = "Update USERS set DESCRIPTION='" + txtNewPwd.Text + "' where USERID='" + txtUserID.Text + "'";
+                   //  MessageBox.Show(SqlString);
+                    string DBname = CliUtils.fLoginDB;
+                    // MessageBox.Show(DBname);
+                    //  object[] myRetSam = CliUtils.CallMethod("Stbasic", "GetConnectString", new object[] { (object)sParam });
+                    string myConnectionString = DbConnectionSet.GetDbConn(DBname).ConnectionString;
+                    // MessageBox.Show(myConnectionString);
+                    SqlConnection myConnection= new SqlConnection(myConnectionString);
+                    SqlCommand myCommand = new SqlCommand(SqlString);
+                    myCommand.Connection = myConnection;
+                    myConnection.Open();
+                    myCommand.ExecuteNonQuery();
+                    myCommand.Connection.Close();
+                    // SamWu 2018/3/6 
+
+                
                     string message = SysMsg.GetSystemMessage(language, "Srvtools", "UPWDControl", "ChangeSucceed");
                     MessageBox.Show(message);
                     isOK = true;

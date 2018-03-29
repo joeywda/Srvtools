@@ -116,6 +116,8 @@ namespace Srvtools
                         if (infoDsUsers.RealDataSet.Tables[0].Rows[i]["USERID"].ToString() == sUserId)
                         {
                             infoDsUsers.RealDataSet.Tables[0].Rows[i]["PWD"] = pwd;
+                            //2018/3/26 Leslie:存入明碼 
+                            infoDsUsers.RealDataSet.Tables[0].Rows[i]["DESCRIPTION"] = this.txtPassword.Text;
                             break;
                         }
                     }
@@ -920,7 +922,8 @@ namespace Srvtools
             String PWD = "";
             try
             {
-                infoDsUsers.Execute("UPDATE USERS SET PWD='" + PWD + "', LASTDATE='' where USERID='" + (bsUsers.Current as DataRowView).Row["USERID"].ToString() + "'");
+                //SamWu 2018/3/6  , 將密碼之明細存入 DESCRIPTION
+                infoDsUsers.Execute("UPDATE USERS SET  DESCRIPTION='', PWD='" + PWD + "', LASTDATE='' where USERID='" + (bsUsers.Current as DataRowView).Row["USERID"].ToString() + "'");
                 MessageBox.Show("Reset succeed!");
             }
             catch (Exception ex)
