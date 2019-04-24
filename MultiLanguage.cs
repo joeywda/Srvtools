@@ -94,16 +94,6 @@ namespace Srvtools
             }
         }
 
-        //2019/2/22 Leslie:加入判別視窗
-        private string _mFormName;
-        [Category("TTRI"),
-        Description("Form Name")]
-        public string mFormName
-        {
-            get { return _mFormName; }
-            set { _mFormName = value; }
-        }
-
         /// <summary>
         /// 设置语言
         /// </summary>
