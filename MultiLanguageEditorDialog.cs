@@ -56,6 +56,12 @@ namespace Srvtools
             get { return _XMLFile; }
         }
 
+        private string _mFormName;
+        public string mFormName
+        {
+            get { return _mFormName; }
+        }
+
         private SelectedLanguages _Languages;
 
         public SelectedLanguages Languages
@@ -131,6 +137,8 @@ namespace Srvtools
                 _Alias = control.DataBase;
                 _XMLFile = string.Format("{0}\\{1}\\{2}.xml", EEPRegistry.Client, sCurProject, ID);
 
+                //2019/2/22 Leslie:加入FormName
+                _mFormName = control.mFormName;
             }
             else
             {
@@ -460,8 +468,8 @@ namespace Srvtools
                             }
                             else
                             {
-                                sbuilder.Append(") ");
-                                parambuilder.Append(") ");
+                                sbuilder.Append(",FormName) ");
+                                parambuilder.Append($",'{mFormName}') ");
                             }
                         }
                         command.CommandText = string.Format("{0}{1}", sbuilder, parambuilder);
@@ -607,7 +615,11 @@ namespace Srvtools
         {
             XmlDocument xml = new XmlDocument();
             xml.AppendChild(xml.CreateXmlDeclaration("1.0", "UTF-8", null));
-            xml.AppendChild(xml.CreateElement("Infolight"));
+            //xml.AppendChild(xml.CreateElement("Infolight"));
+            //2019/2/22 Leslie:加入一個FormName屬性
+            XmlElement infolight = xml.CreateElement("Infolight");
+            infolight.SetAttribute("FormName", mFormName);
+            xml.AppendChild(infolight);
             SaveLanguageNode(xml);
             try
             {
