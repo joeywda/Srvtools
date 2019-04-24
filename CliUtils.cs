@@ -85,7 +85,7 @@ namespace Srvtools
             {
                 if (null == remoteobject)
                     remoteobject = new EEPRemoteModule();
-            Label_RemoteObject:
+                Label_RemoteObject:
                 try
                 {
                     if (fClientSystem == "Web")
@@ -2072,12 +2072,19 @@ namespace Srvtools
             }
         }
 
-        static public bool UpLoad(string clientFileName, string serverFileName)
+        static public bool UpLoad(string clientFileName, string serverFileName, bool overWrite = false)
         {
             if (File.Exists(clientFileName))
             {
                 byte[] bfile = File.ReadAllBytes(clientFileName);
                 object[] myRet = CallMethod("GLModule", "UpLoadFile", new object[] { serverFileName, bfile });
+
+                //2019/4/23 Leslie:判斷是否要覆寫，同步新增GLModule-UpLoadFileOverWrite
+                if (overWrite)
+                {
+                    myRet = CallMethod("GLModule", "UpLoadFileOverWrite", new object[] { serverFileName, bfile });
+                }
+
                 if (myRet != null && (int)myRet[0] == 0)
                 {
                     if ((int)myRet[1] == 0)
@@ -2398,7 +2405,7 @@ namespace Srvtools
             {
                 LoginService loginService = Activator.GetObject(typeof(LoginService),
                         string.Format("http://{0}:{1}/Srvtools.rem", fRemoteIP, fRemotePort)) as LoginService;
-            GetLoginService:
+                GetLoginService:
                 try
                 {
                     object[] rtn = loginService.GetServerIP(loadbalance);
