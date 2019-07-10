@@ -601,15 +601,36 @@ namespace Srvtools
             dsAllData = (InfoDataSet)this.DataSource.GetDataSource();
             //if (!bClearWhere)
             //{
+
+            string tabFromName = "";
+            string Sqltext = "";
+            //---2017/8/3 Leslie修正：使用DataSource時，無法讀取SelectCommand
             if (this.RefVal.SelectCommand == null || this.RefVal.SelectCommand == "")
             {
-                dsAllData.ClearWhere();
+                string strModuleName = dsAllData.RemoteName.Substring(0, (dsAllData.RemoteName.IndexOf('.')));
+                string strTableName = dsAllData.RemoteName.Substring((dsAllData.RemoteName.IndexOf('.') + 1));
+                tabFromName = CliUtils.GetTableName(strModuleName, strTableName, CliUtils.fCurrentProject);
+                string sqlcmd = CliUtils.GetSqlCommandText(strModuleName, strTableName, CliUtils.fCurrentProject);
+                Sqltext = CliUtils.InsertWhere(sqlcmd, QWhereStr);
             }
             else
             {
-                //modified by lily 2007/3/13 RefVal.SelectAlias-->null,for runtime loginDB is the right db.
-                dsAllData.Execute(RefVal.SelectCommand, null, true);
+                tabFromName = CliUtils.GetTableName(this.RefVal.SelectCommand, true);
+                Sqltext = CliUtils.InsertWhere(this.RefVal.SelectCommand, QWhereStr);
             }
+
+
+            dsAllData.Execute(Sqltext, "", true);
+
+            //if (this.RefVal.SelectCommand == null || this.RefVal.SelectCommand == "")
+            //{
+            //    dsAllData.ClearWhere();
+            //}
+            //else
+            //{
+            //    //modified by lily 2007/3/13 RefVal.SelectAlias-->null,for runtime loginDB is the right db.
+            //    dsAllData.Execute(RefVal.SelectCommand, null, true);
+            //}
             //}
         }
 
