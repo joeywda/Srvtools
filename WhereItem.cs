@@ -17,21 +17,23 @@ namespace Srvtools
         NotEqual,
         GreaterOrEquals,
         LessOrEquals,
-        In //---2017/8/3 Leslie新增Refval-whereitem in功能
+        In, //---2017/8/3 Leslie新增Refval-whereitem in功能
+        NotIn //2019/11/28 Leslie新增Refval-whereitem NotIn功能
     }
 
     public class WhereItem : InfoOwnerCollectionItem, IGetValues
     {
         public WhereItem()
-            : this("", condition.Equals, "")
+            : this("", condition.Equals, "", true)
         {
         }
 
-        public WhereItem(string fieldName, condition con, string value)
+        public WhereItem(string fieldName, condition con, string value, bool active)
         {
             _FieldName = fieldName;
             _Condition = con;
             _Value = value;
+            _Active = active;
         }
 
         private string _FieldName;
@@ -71,6 +73,19 @@ namespace Srvtools
             set
             {
                 _Value = value;
+            }
+        }
+        //2019/11/28 Leslie:新增whereitem是否啟用
+        private bool _Active = true;
+        public bool Active
+        {
+            get
+            {
+                return _Active;
+            }
+            set
+            {
+                _Active = value;
             }
         }
 
@@ -121,6 +136,8 @@ namespace Srvtools
             }
             else if (this.Condition == condition.In) //---2017/8/3 Leslie新增Refval-whereitem in功能
                 return "in";
+            else if (this.Condition == condition.NotIn) //2019/11/28 Leslie新增Refval-whereitem NotIn功能
+                return "not in";
             else
             {
                 return null;

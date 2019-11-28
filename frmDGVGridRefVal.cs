@@ -130,6 +130,49 @@ namespace Srvtools
                 (this.DataSource.DataSource as InfoDataSet).NextPacket += new InfoDataSet.PacketEventHandler(DataSource_NextPacket);
             }
 
+            //---2012/4/23 Leslie
+            if (this.RefVal.QWhere1_LabelName.Length > 0)
+            { this.label1.Text = this.RefVal.QWhere1_LabelName; }
+            if (this.RefVal.QWhere2_LabelName.Length > 0)
+            { this.label2.Text = this.RefVal.QWhere2_LabelName; }
+
+            string tabFromName = "";
+            string Sqltext = "";
+            string strModuleName = "";
+            string strTableName = "";
+            string[] quote = CliUtils.GetDataBaseQuote();
+            if (this.RefVal.SelectCommand == null || this.RefVal.SelectCommand == "")
+            {
+                InfoDataSet infoDataSet = (InfoDataSet)this.DataSource.GetDataSource();
+                strModuleName = infoDataSet.RemoteName.Substring(0, infoDataSet.RemoteName.IndexOf('.'));
+                strTableName = infoDataSet.RemoteName.Substring(infoDataSet.RemoteName.IndexOf('.') + 1);
+                //modified by lily 2007/7/16 在GetDD的時候，只需要抓from後面的tablename，而不用考慮別名
+                tabFromName = CliUtils.GetTableName(strModuleName, strTableName, CliUtils.fCurrentProject, "", true);
+                Sqltext = CliUtils.GetSqlCommandText(strModuleName, strTableName, CliUtils.fCurrentProject);
+
+            }
+            else
+            {
+                //---2010/12/07 Leslie修改：每次開啟重整一次資料庫，不要留著搜尋記錄
+                InfoDataSet infoDataSet = (InfoDataSet)this.DataSource.GetDataSource();
+
+                //modified by lily 2007/7/16 在GetDD的時候，只需要抓from後面的tablename，而不用考慮別名
+                tabFromName = CliUtils.GetTableName(this.RefVal.SelectCommand, true);
+                //Sqltext = this.RefVal.SelectCommand;
+                QWhereStr = this.RefVal.WhereString(CliUtils.GetTableName(this.RefVal.SelectCommand), this.RefVal.SelectCommand, quote);
+                if (QWhereStr.Length > 0)
+                {
+                    Sqltext = CliUtils.InsertWhere(this.RefVal.SelectCommand, QWhereStr);
+                }
+                else
+                {
+                    Sqltext = this.RefVal.SelectCommand;
+                }
+                infoDataSet.Execute(Sqltext, "", true);
+
+
+            }
+
             if (this.RefVal.Columns.Count == 0)
             {
                 DataSet ds = new DataSet();
@@ -238,7 +281,7 @@ namespace Srvtools
                 if (this.GridCtrl.FilterInit)
                     textBox4.Text = this.InitValue;
             }
-            else if(this.GridCtrl == null && this.BoxCtrl != null)
+            else if (this.GridCtrl == null && this.BoxCtrl != null)
             {
                 if (this.BoxCtrl.FilterInit)
                     textBox4.Text = this.InitValue;
@@ -359,7 +402,7 @@ namespace Srvtools
 
                         //POCA
 
-                        if (m == 0)
+                        if (m == 0 && this.RefVal.QWhere1_LabelName.Length == 0)
                         {
                             textBox3.Text = this.RefVal.Columns[0].Column;
                             textBox4.Visible = true;
@@ -367,7 +410,7 @@ namespace Srvtools
                             label1.Visible = true;
                         }
 
-                        if (m == 1)
+                        if (m == 1 && this.RefVal.QWhere2_LabelName.Length == 0)
                         {
                             textBox1.Text = this.RefVal.Columns[1].Column;
                             textBox2.Visible = true;
@@ -394,8 +437,12 @@ namespace Srvtools
                 for (int y = 0; y < AddColumnList.Count; y++)
                 {
                     ((DataGridViewColumn)AddColumnList[y]).DisplayIndex = y;
-                    this.dgView.Columns.Insert(y, (DataGridViewColumn)AddColumnList[y]);
 
+                    //2019/11/28 Leslie:修正column visible無效之問題
+                    bool _visible = ((DataGridViewColumn)AddColumnList[y]).Visible;
+
+                    this.dgView.Columns.Insert(y, (DataGridViewColumn)AddColumnList[y]);
+                    this.dgView.Columns[y].Visible = _visible;
                 }
             }
         }
@@ -642,8 +689,8 @@ namespace Srvtools
             {
                 this.timer.Stop();
                 hotkey.Append(e.KeyChar);
-                 this.Text = this.RefVal.Caption;//POCA
-               // this.Text = string.Format("({0})", hotkey); //poca
+                this.Text = this.RefVal.Caption;//POCA
+                                                // this.Text = string.Format("({0})", hotkey); //poca
                 for (int i = 0; i < dgView.Rows.Count; i++)
                 {
                     string strCell = dgView[this.ValueField, i].Value.ToString();
@@ -800,7 +847,7 @@ namespace Srvtools
             {
                 this.DataSource.AddNew();
                 Mod_Navigator = false;
-                this.dgView.SelectionMode = DataGridViewSelectionMode.FullRowSelect ;
+                this.dgView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 this.dgView.EditMode = DataGridViewEditMode.EditOnEnter;
 
                 if (this.RefVal.AddKeycolumns.Count != 0 && this.RefVal.OwnerComp != null)
@@ -840,23 +887,24 @@ namespace Srvtools
             {
                 //---2010/12/14 Leslie修改：在畫面中按F12可以重新抓取資料庫
                 string tabFromName = "";
-                string Sqltext = "";                
+                string Sqltext = "";
                 InfoDataSet infoDataSet = (InfoDataSet)this.DataSource.GetDataSource();
                 //---2017/8/3 Leslie修正：使用DataSource時，無法讀取SelectCommand
                 if (this.RefVal.SelectCommand == null)
-                {                     
+                {
                     string strModuleName = infoDataSet.RemoteName.Substring(0, (infoDataSet.RemoteName.IndexOf('.')));
                     string strTableName = infoDataSet.RemoteName.Substring((infoDataSet.RemoteName.IndexOf('.') + 1));
                     tabFromName = CliUtils.GetTableName(strModuleName, strTableName, CliUtils.fCurrentProject);
                     string sqlcmd = CliUtils.GetSqlCommandText(strModuleName, strTableName, CliUtils.fCurrentProject);
                     Sqltext = CliUtils.InsertWhere(sqlcmd, QWhereStr);
                 }
-                else {
+                else
+                {
                     tabFromName = CliUtils.GetTableName(this.RefVal.SelectCommand, true);
                     Sqltext = CliUtils.InsertWhere(this.RefVal.SelectCommand, QWhereStr);
                 }
 
-                
+
                 infoDataSet.Execute(Sqltext, "", true);
                 //   this.Text = this.RefVal.Caption;
                 clearHotKeyBuffer();
@@ -902,7 +950,7 @@ namespace Srvtools
                     tabFromName = CliUtils.GetTableName(this.RefVal.SelectCommand, true);
                     Sqltext = CliUtils.InsertWhere(this.RefVal.SelectCommand, QWhereStr);
                 }
-                
+
                 infoDataSet.Execute(Sqltext, "", true);
                 //  this.Text = this.RefVal.Caption;  //POCA
                 clearHotKeyBuffer();
@@ -932,10 +980,11 @@ namespace Srvtools
                 tablename = CliUtils.GetTableName(strModuleName, strTableName, CliUtils.fCurrentProject);
                 sqlcmd = CliUtils.GetSqlCommandText(strModuleName, strTableName, CliUtils.fCurrentProject);
             }
-
+                       
+           
             //2017/12/6 jay TEXTBOX查詢稱加%%
             //string strQueryCondition = tablename + "." + textBox3.Text + " like '" + textBox4.Text + "%'";
-            string strQueryCondition = "";
+            string strQueryCondition = "";           
             if (this.RefVal.TextboxSelectType == true)
             {
                 strQueryCondition = tablename + "." + textBox3.Text + " like '%" + textBox4.Text + "%'";
@@ -963,14 +1012,14 @@ namespace Srvtools
             };
 
             //---2017/8/3 Leslie:使用DataSource的情況，where條件要改寫
-            if (this.RefVal.SelectCommand == null)  
+            if (this.RefVal.SelectCommand == null)
             {
                 string cmd = CliUtils.InsertWhere(sqlcmd, QWhereStr);
                 if (strQueryCondition != "")
                 {
                     cmd = CliUtils.InsertWhere(cmd, strQueryCondition);
                 }
-                
+
                 //infoDs.Execute("select * from TCUST where CUST_NO like '1%'", "", true);
                 infoDs.Execute(cmd, "", true);
             }
@@ -983,7 +1032,7 @@ namespace Srvtools
                 }
                 infoDs.Execute(cmd, "", true);
             }
-            
+
             //textBox1.Text = cmd;
             this.timer.Start();
         }
@@ -1054,7 +1103,8 @@ namespace Srvtools
                 //infoDs.Execute("select * from TCUST where CUST_NO like '1%'", "", true);
                 infoDs.Execute(cmd, "", true);
             }
-            else {
+            else
+            {
                 string cmd = CliUtils.InsertWhere(this.RefVal.SelectCommand, QWhereStr);
                 if (strQueryCondition != "")
                 {
@@ -1062,7 +1112,7 @@ namespace Srvtools
                 }
                 infoDs.Execute(cmd, "", true);
             }
-           
+
             //textBox1.Text = cmd;
             this.timer.Start();
 
@@ -1080,7 +1130,7 @@ namespace Srvtools
                 if (this.dgView.CurrentRow.Index > 0)
                     this.dgView.CurrentCell = this.dgView[0, this.dgView.CurrentRow.Index - 1];
             }
-            else if (e.KeyCode==Keys.PageDown)
+            else if (e.KeyCode == Keys.PageDown)
             {
                 if (this.dgView.CurrentRow.Index + 10 < this.dgView.Rows.Count - 1)
                     this.dgView.CurrentCell = this.dgView[0, this.dgView.CurrentRow.Index + 10];
@@ -1094,7 +1144,7 @@ namespace Srvtools
                 else
                     this.dgView.CurrentCell = this.dgView[0, 0];
             }
-            else if(e.KeyCode==Keys.Enter)
+            else if (e.KeyCode == Keys.Enter)
             {
                 //Jay 20160907
                 //doOk();

@@ -33,6 +33,58 @@ namespace Srvtools
         internal InfoDataSet InnerDs = new InfoDataSet();
         internal InfoBindingSource InnerBs = new InfoBindingSource();
 
+        //---2019/11/28 Leslie加入:存取搜尋欄位
+        struct QWhere
+        {
+            public string _LabelName;
+            public string _FieldName;
+            public string LabelName
+            {
+                get {
+                    if (_LabelName == null)
+                        return "";
+                    return _LabelName;
+                }
+                set { _LabelName = value; }
+            }
+            public string FieldName
+            {
+                get {
+                    if (_FieldName == null)
+                        return "";
+                    return _FieldName;
+                }
+                set { _FieldName = value; }
+            }
+        }
+        private QWhere _QWhere1;
+        [Category("TTRI")]
+        public string QWhere1_LabelName
+        {
+            get { return _QWhere1.LabelName; }
+            set { _QWhere1.LabelName = value; }
+        }
+        [Category("TTRI")]
+        public string QWhere1_FieldName
+        {
+            get { return _QWhere1.FieldName; }
+            set { _QWhere1.FieldName = value; }
+        }
+        private QWhere _QWhere2;
+        [Category("TTRI")]
+        public string QWhere2_LabelName
+        {
+            get { return _QWhere2.LabelName; }
+            set { _QWhere2.LabelName = value; }
+        }
+        [Category("TTRI")]
+        public string QWhere2_FieldName
+        {
+            get { return _QWhere2.FieldName; }
+            set { _QWhere2.FieldName = value; }
+        }
+
+
         public InfoRefVal()
         {
             _whereItem = new WhereItemCollection(this, typeof(WhereItem));
@@ -245,7 +297,7 @@ namespace Srvtools
 
         private string _ValueMember;
         [Category("Infolight"),
-        Description("indicates the property to display for the items in this control")]    
+        Description("indicates the property to display for the items in this control")]
         [Editor("System.Windows.Forms.Design.DataMemberFieldEditor,System.Design", "System.Drawing.Design.UITypeEditor, System.Drawing")]
         public string ValueMember
         {
@@ -264,7 +316,7 @@ namespace Srvtools
         }
         private string _LinkDisplayMember;
         [Category("Infolight"),
-        Description("indicates the property to display for the items in this control")]    
+        Description("indicates the property to display for the items in this control")]
         [Editor("System.Windows.Forms.Design.DataMemberFieldEditor,System.Design", "System.Drawing.Design.UITypeEditor, System.Drawing")]
         public string LinkDisplayMember
         {
@@ -279,7 +331,7 @@ namespace Srvtools
         }
         private string _LinkObject;
         [Category("Infolight"),
-        Description("RefValBox一律只顯示ID, 然後在右邊貼上一個TextBox用來顯示名稱")]    
+        Description("RefValBox一律只顯示ID, 然後在右邊貼上一個TextBox用來顯示名稱")]
         public string LinkObject
         {
             get
@@ -291,7 +343,7 @@ namespace Srvtools
                 _LinkObject = value;
             }
         }
-        
+
         //private string _SortMember;
         //[Category("Infolight"),
         //Description("indicates the property to display for the items in this control")]    
@@ -301,7 +353,7 @@ namespace Srvtools
         //    get { return _SortMember; }
         //    set { _SortMember = value; }
         //}
-	
+
         private bool _IgnoreCase = false;
         [Category("Infolight"),
         Description("Ignore up case and low case")]
@@ -325,7 +377,7 @@ namespace Srvtools
             get { return _Font; }
             set { _Font = value; }
         }
-	
+
 
         public enum ShowStyle
         {
@@ -365,7 +417,7 @@ namespace Srvtools
         {
             get { return formSize; }
             set { formSize = value; }
-        }	
+        }
 
         private WhereItemCollection _whereItem;
         [Category("Infolight"),
@@ -410,12 +462,12 @@ namespace Srvtools
             set { _AddKeycolumns = value; }
         }
 
-        private string  _FLookupValue = string.Empty;
+        private string _FLookupValue = string.Empty;
         [Browsable(false)]
-        public string  FLookupValue
+        public string FLookupValue
         {
             get { return _FLookupValue; }
-            set { _FLookupValue  = value; }
+            set { _FLookupValue = value; }
         }
 
         private bool _whereItemCache = true;
@@ -425,8 +477,8 @@ namespace Srvtools
             get { return _whereItemCache; }
             set { _whereItemCache = value; }
         }
-	
-	
+
+
 
         public void Active(OnActiveEventArgs value)
         {
@@ -613,7 +665,7 @@ namespace Srvtools
         private bool _AlwaysClose = false;
         [Category("Infolight"),
         Description("Indicate whether the data is get when the form loads")]
-        public bool AlwaysClose 
+        public bool AlwaysClose
         {
             get
             {
@@ -773,7 +825,7 @@ namespace Srvtools
                 //Modified by lily false to true解决新增时会显示其他值而不是空白的问题
                 return new object[] { true, "", null };
             }
-            object[] obj = new object[] { false, "",null };
+            object[] obj = new object[] { false, "", null };
             SetAll();
             if (strDisField == strValField && !CheckData && columnMatch.Count == 0)
             {
@@ -972,7 +1024,7 @@ namespace Srvtools
                         }
                     }
                 }
-            nnFind:
+                nnFind:
                 if (Repaint)
                     RefreshRefColumns();
                 if (!(bool)obj[0] && bReport)
@@ -1178,7 +1230,7 @@ namespace Srvtools
                             }
                         }
                     }
-                nnFind:
+                    nnFind:
                     if (!(bool)obj[0])
                     {
                         //String message = SysMsg.GetSystemMessage(CliUtils.fClientLang, "Srvtools", "InfoRefVal", "msg_RefValValueNotFound");
@@ -1222,6 +1274,9 @@ namespace Srvtools
             {
                 foreach (WhereItem wi in this.whereItem)
                 {
+                    //2019/11/28 Leslie:新增Refval-whereitem 是否啟用功能
+                    if (!wi.Active) continue;
+
                     string whereValue = "";
                     //if (this.OwnerComp != null)
                     whereValue = this.GetValue(wi.Value);
@@ -1231,7 +1286,8 @@ namespace Srvtools
                     }
                     string type = ((InfoDataSet)objDataSource).RealDataSet.Tables[strSourceTab].Columns[wi.FieldName].DataType.ToString().ToLower();
                     if (wi.GetSign() != "like begin with value" && wi.GetSign() != "like with value"
-                            && wi.GetSign() != "in") //---2017/8/3 Leslie新增Refval-whereitem in功能
+                            && wi.GetSign() != "in" && wi.GetSign() != "not in") //---2017/8/3 Leslie新增Refval-whereitem in功能
+                                                                                 //2019/11/28 Leslie新增Refval-whereitem NotIn功能
                     {
                         if (type == "system.uint" || type == "system.uint16" || type == "system.uint32" || type == "system.uint64"
                          || type == "system.int" || type == "system.int16" || type == "system.int32" || type == "system.int64"
@@ -1258,6 +1314,10 @@ namespace Srvtools
                         {
                             strFilter += wi.FieldName + " in (" + whereValue + ") and ";
                         }
+                        if (wi.GetSign() == "not in") //2019/11/28 Leslie新增Refval-whereitem NotIn功能
+                        {
+                            strFilter +="Not ("+ wi.FieldName + " in (" + whereValue + ")) and ";
+                        }
                     }
                 }
                 if (strFilter != string.Empty)
@@ -1265,12 +1325,12 @@ namespace Srvtools
                     strFilter = strFilter.Substring(0, strFilter.LastIndexOf(" and "));
                 }
             }
-            NavigatorQueryWhereEventArgs args = new NavigatorQueryWhereEventArgs(strFilter,true);
+            NavigatorQueryWhereEventArgs args = new NavigatorQueryWhereEventArgs(strFilter, true);
             OnQueryWhere(args);
             strFilter = args.WhereString;
             return strFilter;
         }
-        
+
         internal string WhereString(string sql)
         {
             string strFilter = "";
@@ -1278,6 +1338,9 @@ namespace Srvtools
             {
                 foreach (WhereItem wi in this.whereItem)
                 {
+                    //2019/11/28 Leslie:新增Refval-whereitem 是否啟用功能
+                    if (!wi.Active) continue;
+
                     string whereValue = "";
                     if (this.OwnerComp != null)
                         whereValue = this.GetValue(wi.Value);
@@ -1287,7 +1350,8 @@ namespace Srvtools
                     }
                     string type = ((InfoDataSet)objDataSource).RealDataSet.Tables[strSourceTab].Columns[wi.FieldName].DataType.ToString().ToLower();
                     if (wi.GetSign() != "like begin with value" && wi.GetSign() != "like with value"
-                            && wi.GetSign() != "in") //---2017/8/3 Leslie新增Refval-whereitem in功能
+                            && wi.GetSign() != "in" && wi.GetSign() != "not in") //---2017/8/3 Leslie新增Refval-whereitem in功能
+                                                                                 //2019/11/28 Leslie新增Refval-whereitem NotIn功能
                     {
                         if (type == "system.uint" || type == "system.uint16" || type == "system.uint32" || type == "system.uint64"
                          || type == "system.int" || type == "system.int16" || type == "system.int32" || type == "system.int64"
@@ -1318,6 +1382,75 @@ namespace Srvtools
                         if (wi.GetSign() == "in") //---2017/8/3 Leslie新增Refval-whereitem in功能
                         {
                             strFilter += CliUtils.GetTableNameForColumn(sql, wi.FieldName) + " in (" + whereValue + ") and ";
+                        }
+                        if (wi.GetSign() == "not in") //2019/11/28 Leslie新增Refval-whereitem NotIn功能
+                        {
+                            strFilter += "Not (" + CliUtils.GetTableNameForColumn(sql, wi.FieldName) + " in (" + whereValue + ")) and ";
+                        }
+                    }
+                }
+                if (strFilter != string.Empty)
+                {
+                    strFilter = strFilter.Substring(0, strFilter.LastIndexOf(" and "));
+                }
+            }
+            NavigatorQueryWhereEventArgs args = new NavigatorQueryWhereEventArgs(strFilter);
+            OnQueryWhere(args);
+            strFilter = args.WhereString;
+            return strFilter;
+        }
+
+        //---2011/10/25 Leslie加入：由EEP2006中複製過來
+        public string WhereString(string tableName, string sql, string[] quote)
+        {
+            string strFilter = "";
+            if (this.whereItem.Count != 0)
+            {
+                foreach (WhereItem wi in this.whereItem)
+                {
+                    //2019/11/28 Leslie:新增Refval-whereitem 是否啟用功能
+                    if (!wi.Active) continue;
+
+                    string whereValue = "";
+                    if (this.OwnerComp != null)
+                        whereValue = this.GetValue(wi.Value);
+                    if (objDataSource == null)
+                    {
+                        SetAll();
+                    }
+                    string type = ((InfoDataSet)objDataSource).RealDataSet.Tables[strSourceTab].Columns[wi.FieldName].DataType.ToString().ToLower();
+                    if (wi.GetSign() != "like begin with value" && wi.GetSign() != "like with value"
+                         && wi.GetSign() != "in" && wi.GetSign() != "not in") //---2017/8/3 Leslie新增Refval-whereitem in功能
+                                                                              //2019/11/28 Leslie新增Refval-whereitem NotIn功能
+                    {
+                        if (type == "system.uint" || type == "system.uint16" || type == "system.uint32" || type == "system.uint64"
+                         || type == "system.int" || type == "system.int16" || type == "system.int32" || type == "system.int64"
+                         || type == "system.single" || type == "system.float" || type == "system.double" || type == "system.decimal")
+                        {
+                            strFilter += CliUtils.GetTableNameForColumn(sql, wi.FieldName, tableName, quote) + wi.GetSign() + whereValue + " and ";
+                        }
+                        else
+                        {
+                            strFilter += CliUtils.GetTableNameForColumn(sql, wi.FieldName, tableName, quote) + wi.GetSign() + "'" + whereValue + "' and ";
+                        }
+                    }
+                    else
+                    {
+                        if (wi.GetSign() == "like begin with value")
+                        {
+                            strFilter += CliUtils.GetTableNameForColumn(sql, wi.FieldName, tableName, quote) + " like '" + whereValue + "%' and ";
+                        }
+                        if (wi.GetSign() == "like with value")
+                        {
+                            strFilter += CliUtils.GetTableNameForColumn(sql, wi.FieldName, tableName, quote) + " like '%" + whereValue + "%' and ";
+                        }
+                        if (wi.GetSign() == "in") //---2017/8/3 Leslie新增Refval-whereitem in功能
+                        {
+                            strFilter += CliUtils.GetTableNameForColumn(sql, wi.FieldName) + " in (" + whereValue + ") and ";
+                        }
+                        if (wi.GetSign() == "not in") //2019/11/28 Leslie新增Refval-whereitem NotIn功能
+                        {
+                            strFilter += "Not (" + CliUtils.GetTableNameForColumn(sql, wi.FieldName) + " in (" + whereValue + ")) and ";
                         }
                     }
                 }
@@ -1433,7 +1566,7 @@ namespace Srvtools
                 }
             }
         }
-        public void DoLinkMatch(string strLinkValue,Form form)
+        public void DoLinkMatch(string strLinkValue, Form form)
         {
             if (AllCtrls.Count > 0)
                 AllCtrls.Clear();
@@ -1563,7 +1696,7 @@ namespace Srvtools
                         }
                     }
                 }
-                ColumnList.SelectedIndexChanged += delegate(object sender, EventArgs e)
+                ColumnList.SelectedIndexChanged += delegate (object sender, EventArgs e)
                 {
                     int index = ColumnList.SelectedIndex;
                     if (index != -1)
