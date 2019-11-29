@@ -132,9 +132,26 @@ namespace Srvtools
 
             //---2012/4/23 Leslie
             if (this.RefVal.QWhere1_LabelName.Length > 0)
-            { this.label1.Text = this.RefVal.QWhere1_LabelName; }
+            {
+                this.lblQry1.Text = this.RefVal.QWhere1_LabelName;
+                this.textBox1.Text = this.RefVal.QWhere1_FieldName;
+                txtQry1.Visible = true;
+                lblQry1.Visible = true;
+            }
             if (this.RefVal.QWhere2_LabelName.Length > 0)
-            { this.label2.Text = this.RefVal.QWhere2_LabelName; }
+            {
+                this.lblQry2.Text = this.RefVal.QWhere2_LabelName;
+                this.textBox2.Text = this.RefVal.QWhere2_FieldName;
+                txtQry2.Visible = true;
+                lblQry2.Visible = true;
+            }
+            if (this.RefVal.QWhere3_LabelName.Length > 0)
+            {
+                this.lblQry3.Text = this.RefVal.QWhere3_LabelName;
+                this.textBox3.Text = this.RefVal.QWhere3_FieldName;
+                txtQry3.Visible = true;
+                lblQry3.Visible = true;
+            }
 
             string tabFromName = "";
             string Sqltext = "";
@@ -273,18 +290,18 @@ namespace Srvtools
                 }
             }
             this.dgView.Select();
-            this.textBox4.Select(); //POCA
+            this.txtQry1.Select(); //POCA
 
             //2016/8/16 Leslie:搜尋起始值
             if (this.BoxCtrl == null && this.GridCtrl != null)
             {
                 if (this.GridCtrl.FilterInit)
-                    textBox4.Text = this.InitValue;
+                    txtQry1.Text = this.InitValue;
             }
             else if (this.GridCtrl == null && this.BoxCtrl != null)
             {
                 if (this.BoxCtrl.FilterInit)
-                    textBox4.Text = this.InitValue;
+                    txtQry1.Text = this.InitValue;
             }
 
 
@@ -362,6 +379,7 @@ namespace Srvtools
             else
             {
                 this.Size = this.RefVal.FormSize;
+                this.CenterToScreen();
             }
             //mdi centerparent
             //if (((Form)this.RefVal.OwnerComp).Parent is MdiClient)
@@ -404,19 +422,33 @@ namespace Srvtools
 
                         if (m == 0 && this.RefVal.QWhere1_LabelName.Length == 0)
                         {
-                            textBox3.Text = this.RefVal.Columns[0].Column;
-                            textBox4.Visible = true;
-                            label1.Text = this.RefVal.Columns[0].HeaderText;
-                            label1.Visible = true;
+                            textBox1.Text = this.RefVal.Columns[0].Column;
+                            txtQry1.Visible = true;
+                            lblQry1.Text = this.RefVal.Columns[0].HeaderText;
+                            lblQry1.Visible = true;
+                        }
+                        if (this.RefVal.Columns.Count >= 2)
+                        {
+                            if (m == 1 && this.RefVal.QWhere2_LabelName.Length == 0)
+                            {
+                                textBox2.Text = this.RefVal.Columns[1].Column;
+                                txtQry2.Visible = true;
+                                lblQry2.Text = this.RefVal.Columns[1].HeaderText;
+                                lblQry2.Visible = true;
+                            }
                         }
 
-                        if (m == 1 && this.RefVal.QWhere2_LabelName.Length == 0)
+                        if (this.RefVal.Columns.Count >= 3)
                         {
-                            textBox1.Text = this.RefVal.Columns[1].Column;
-                            textBox2.Visible = true;
-                            label2.Text = this.RefVal.Columns[1].HeaderText;
-                            label2.Visible = true;
+                            if (m == 2 && this.RefVal.QWhere3_LabelName.Length == 0)
+                            {
+                                textBox3.Text = this.RefVal.Columns[2].Column;
+                                txtQry3.Visible = true;
+                                lblQry3.Text = this.RefVal.Columns[2].HeaderText;
+                                lblQry3.Visible = true;
+                            }
                         }
+
 
                         if (string.Compare(this.RefVal.Columns[j].Column, this.dgView.Columns[m].Name, true) == 0)//IgnoreCase
                         {
@@ -866,7 +898,7 @@ namespace Srvtools
             //end
         }
 
-        private void textBox4_KeyDown(object sender, KeyEventArgs e)
+        private void txtQry1_KeyDown(object sender, KeyEventArgs e)
         {
             //POCA
             if (e.KeyCode == Keys.Enter)
@@ -913,51 +945,8 @@ namespace Srvtools
             }
         }
 
-        private void textBox2_KeyDown(object sender, KeyEventArgs e)
-        {
-            //POCA
-            if (e.KeyCode == Keys.Enter)
-            {
-                //Jay 20160907
-                //doOk();
-                if (Mod_Navigator != false)
-                {
-                    doOk();
-                }
-                //end
-            }
-            else if (e.KeyCode == Keys.Escape)
-            {
-                this.DialogResult = DialogResult.Cancel;
-            }
-            else if (e.KeyCode == Keys.F12)
-            {
-                //---2010/12/14 Leslie修改：在畫面中按F12可以重新抓取資料庫
-                string tabFromName = "";
-                string Sqltext = "";
-                InfoDataSet infoDataSet = (InfoDataSet)this.DataSource.GetDataSource();
-                //---2017/8/3 Leslie修正：使用DataSource時，無法讀取SelectCommand
-                if (this.RefVal.SelectCommand == null)
-                {
-                    string strModuleName = infoDataSet.RemoteName.Substring(0, (infoDataSet.RemoteName.IndexOf('.')));
-                    string strTableName = infoDataSet.RemoteName.Substring((infoDataSet.RemoteName.IndexOf('.') + 1));
-                    tabFromName = CliUtils.GetTableName(strModuleName, strTableName, CliUtils.fCurrentProject);
-                    string sqlcmd = CliUtils.GetSqlCommandText(strModuleName, strTableName, CliUtils.fCurrentProject);
-                    Sqltext = CliUtils.InsertWhere(sqlcmd, QWhereStr);
-                }
-                else
-                {
-                    tabFromName = CliUtils.GetTableName(this.RefVal.SelectCommand, true);
-                    Sqltext = CliUtils.InsertWhere(this.RefVal.SelectCommand, QWhereStr);
-                }
 
-                infoDataSet.Execute(Sqltext, "", true);
-                //  this.Text = this.RefVal.Caption;  //POCA
-                clearHotKeyBuffer();
-            }
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
+        private void txtQry1_TextChanged(object sender, EventArgs e)
         {
 
             this.timer.Stop();
@@ -980,33 +969,50 @@ namespace Srvtools
                 tablename = CliUtils.GetTableName(strModuleName, strTableName, CliUtils.fCurrentProject);
                 sqlcmd = CliUtils.GetSqlCommandText(strModuleName, strTableName, CliUtils.fCurrentProject);
             }
-                       
-           
+
+
             //2017/12/6 jay TEXTBOX查詢稱加%%
             //string strQueryCondition = tablename + "." + textBox3.Text + " like '" + textBox4.Text + "%'";
-            string strQueryCondition = "";           
+            string strQueryCondition = "";
             if (this.RefVal.TextboxSelectType == true)
             {
-                strQueryCondition = tablename + "." + textBox3.Text + " like '%" + textBox4.Text + "%'";
+                strQueryCondition = tablename + "." + textBox1.Text + " like '%" + txtQry1.Text + "%'";
             }
             else
             {
-                strQueryCondition = tablename + "." + textBox3.Text + " like '" + textBox4.Text + "%'";
+                strQueryCondition = tablename + "." + textBox1.Text + " like '" + txtQry1.Text + "%'";
             }
             //2017/12/6 jay TEXTBOX查詢稱加%%
 
-            if (textBox2.Text != "")
+            if (txtQry2.Text != "")
             {
 
                 //2017/12/6 jay TEXTBOX查詢稱加%%
                 //strQueryCondition = tablename + "." + textBox1.Text + " like '" + textBox2.Text + "%' and " + strQueryCondition;
                 if (this.RefVal.TextboxSelectType == true)
                 {
-                    strQueryCondition = tablename + "." + textBox1.Text + " like '%" + textBox2.Text + "%' and " + strQueryCondition;
+                    strQueryCondition = tablename + "." + textBox2.Text + " like '%" + txtQry2.Text + "%' and " + strQueryCondition;
                 }
                 else
                 {
-                    strQueryCondition = tablename + "." + textBox1.Text + " like '" + textBox2.Text + "%' and " + strQueryCondition;
+                    strQueryCondition = tablename + "." + textBox2.Text + " like '" + txtQry2.Text + "%' and " + strQueryCondition;
+                }
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+            };
+
+            //2019/11/28 Leslie 再加一個快速查詢
+            if (txtQry3.Text != "")
+            {
+
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+                //strQueryCondition = tablename + "." + textBox1.Text + " like '" + textBox2.Text + "%' and " + strQueryCondition;
+                if (this.RefVal.TextboxSelectType == true)
+                {
+                    strQueryCondition = tablename + "." + textBox3.Text + " like '%" + txtQry3.Text + "%' and " + strQueryCondition;
+                }
+                else
+                {
+                    strQueryCondition = tablename + "." + textBox3.Text + " like '" + txtQry3.Text + "%' and " + strQueryCondition;
                 }
                 //2017/12/6 jay TEXTBOX查詢稱加%%
             };
@@ -1037,10 +1043,8 @@ namespace Srvtools
             this.timer.Start();
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void txtQry2_TextChanged(object sender, EventArgs e)
         {
-
-
             this.timer.Stop();
             //this.Text = string.Format("({0})", hotkey);
 
@@ -1067,26 +1071,139 @@ namespace Srvtools
             string strQueryCondition = "";
             if (this.RefVal.TextboxSelectType == true)
             {
-                strQueryCondition = tablename + "." + textBox1.Text + " like '%" + textBox2.Text + "%'";
+                strQueryCondition = tablename + "." + textBox2.Text + " like '%" + txtQry2.Text + "%'";
             }
             else
             {
-                strQueryCondition = tablename + "." + textBox1.Text + " like '" + textBox2.Text + "%'";
+                strQueryCondition = tablename + "." + textBox2.Text + " like '" + txtQry2.Text + "%'";
             }
             //2017/12/6 jay TEXTBOX查詢稱加%%
 
-            if (textBox4.Text != "")
+            if (txtQry1.Text != "")
             {
                 //2017/12/6 jay TEXTBOX查詢稱加%%
                 //strQueryCondition = tablename + "." + textBox3.Text + " like '" + textBox4.Text + "%' and " + strQueryCondition;
 
                 if (this.RefVal.TextboxSelectType == true)
                 {
-                    strQueryCondition = tablename + "." + textBox3.Text + " like '%" + textBox4.Text + "%' and " + strQueryCondition;
+                    strQueryCondition = tablename + "." + textBox1.Text + " like '%" + txtQry1.Text + "%' and " + strQueryCondition;
                 }
                 else
                 {
-                    strQueryCondition = tablename + "." + textBox3.Text + " like '" + textBox4.Text + "%' and " + strQueryCondition;
+                    strQueryCondition = tablename + "." + textBox1.Text + " like '" + txtQry1.Text + "%' and " + strQueryCondition;
+                }
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+            };
+
+            //2019/11/28 Leslie 再加一個快速查詢
+            if (txtQry3.Text != "")
+            {
+
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+                //strQueryCondition = tablename + "." + textBox1.Text + " like '" + textBox2.Text + "%' and " + strQueryCondition;
+                if (this.RefVal.TextboxSelectType == true)
+                {
+                    strQueryCondition = tablename + "." + textBox3.Text + " like '%" + txtQry3.Text + "%' and " + strQueryCondition;
+                }
+                else
+                {
+                    strQueryCondition = tablename + "." + textBox3.Text + " like '" + txtQry3.Text + "%' and " + strQueryCondition;
+                }
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+            };
+
+            //---2017/8/3 Leslie:使用DataSource的情況，where條件要改寫
+            if (this.RefVal.SelectCommand == null)
+            {
+                string cmd = CliUtils.InsertWhere(sqlcmd, QWhereStr);
+                if (strQueryCondition != "")
+                {
+                    cmd = CliUtils.InsertWhere(cmd, strQueryCondition);
+                }
+
+                //infoDs.Execute("select * from TCUST where CUST_NO like '1%'", "", true);
+                infoDs.Execute(cmd, "", true);
+            }
+            else
+            {
+                string cmd = CliUtils.InsertWhere(this.RefVal.SelectCommand, QWhereStr);
+                if (strQueryCondition != "")
+                {
+                    cmd = CliUtils.InsertWhere(cmd, strQueryCondition);
+                }
+                infoDs.Execute(cmd, "", true);
+            }
+
+            //textBox1.Text = cmd;
+            this.timer.Start();
+
+        }
+
+        private void txtQry3_TextChanged(object sender, EventArgs e)
+        {
+            this.timer.Stop();
+            //this.Text = string.Format("({0})", hotkey);
+
+            //------2010/12/07 Leslie修改：可直接搜尋
+            InfoDataSet infoDs = (InfoDataSet)this.DataSource.GetDataSource();
+            string[] quote = CliUtils.GetDataBaseQuote();
+            string tablename = "", sqlcmd = "";
+            if (this.RefVal.SelectAlias != null && this.RefVal.SelectAlias != "" && this.RefVal.SelectCommand != null && this.RefVal.SelectCommand != "")
+            {
+                tablename = CliUtils.GetTableName(RefVal.SelectCommand);
+                sqlcmd = this.RefVal.SelectCommand;
+                //MessageBox.Show(tablename + ":" + sqlcmd);
+            }
+            else
+            {
+                string strModuleName = infoDs.RemoteName.Substring(0, (infoDs.RemoteName.IndexOf('.')));
+                string strTableName = infoDs.RemoteName.Substring((infoDs.RemoteName.IndexOf('.') + 1));
+                tablename = CliUtils.GetTableName(strModuleName, strTableName, CliUtils.fCurrentProject);
+                sqlcmd = CliUtils.GetSqlCommandText(strModuleName, strTableName, CliUtils.fCurrentProject);
+            }
+
+            //2017/12/6 jay TEXTBOX查詢稱加%%
+            //string strQueryCondition = tablename + "." + textBox1.Text + " like '" + textBox2.Text + "%'";
+            string strQueryCondition = "";
+            if (this.RefVal.TextboxSelectType == true)
+            {
+                strQueryCondition = tablename + "." + textBox3.Text + " like '%" + txtQry3.Text + "%'";
+            }
+            else
+            {
+                strQueryCondition = tablename + "." + textBox3.Text + " like '" + txtQry3.Text + "%'";
+            }
+            //2017/12/6 jay TEXTBOX查詢稱加%%
+
+            if (txtQry1.Text != "")
+            {
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+                //strQueryCondition = tablename + "." + textBox3.Text + " like '" + textBox4.Text + "%' and " + strQueryCondition;
+
+                if (this.RefVal.TextboxSelectType == true)
+                {
+                    strQueryCondition = tablename + "." + textBox1.Text + " like '%" + txtQry1.Text + "%' and " + strQueryCondition;
+                }
+                else
+                {
+                    strQueryCondition = tablename + "." + textBox1.Text + " like '" + txtQry1.Text + "%' and " + strQueryCondition;
+                }
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+            };
+
+            //2019/11/28 Leslie 再加一個快速查詢
+            if (txtQry2.Text != "")
+            {
+
+                //2017/12/6 jay TEXTBOX查詢稱加%%
+                //strQueryCondition = tablename + "." + textBox1.Text + " like '" + textBox2.Text + "%' and " + strQueryCondition;
+                if (this.RefVal.TextboxSelectType == true)
+                {
+                    strQueryCondition = tablename + "." + textBox2.Text + " like '%" + txtQry2.Text + "%' and " + strQueryCondition;
+                }
+                else
+                {
+                    strQueryCondition = tablename + "." + textBox2.Text + " like '" + txtQry2.Text + "%' and " + strQueryCondition;
                 }
                 //2017/12/6 jay TEXTBOX查詢稱加%%
             };
@@ -1181,5 +1298,6 @@ namespace Srvtools
             }
             //end
         }
+
     }
 }

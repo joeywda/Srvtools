@@ -57,33 +57,7 @@ namespace Srvtools
                 set { _FieldName = value; }
             }
         }
-        private QWhere _QWhere1;
-        [Category("TTRI")]
-        public string QWhere1_LabelName
-        {
-            get { return _QWhere1.LabelName; }
-            set { _QWhere1.LabelName = value; }
-        }
-        [Category("TTRI")]
-        public string QWhere1_FieldName
-        {
-            get { return _QWhere1.FieldName; }
-            set { _QWhere1.FieldName = value; }
-        }
-        private QWhere _QWhere2;
-        [Category("TTRI")]
-        public string QWhere2_LabelName
-        {
-            get { return _QWhere2.LabelName; }
-            set { _QWhere2.LabelName = value; }
-        }
-        [Category("TTRI")]
-        public string QWhere2_FieldName
-        {
-            get { return _QWhere2.FieldName; }
-            set { _QWhere2.FieldName = value; }
-        }
-
+        
 
         public InfoRefVal()
         {
@@ -94,6 +68,7 @@ namespace Srvtools
             //Jay 20160830
             _AddKeycolumns = new WhereItemCollection(this, typeof(WhereItem));
             //_SortMember = string.Empty;
+
         }
 
         protected override void DoAfterSetOwner(IDataModule value)
@@ -218,6 +193,47 @@ namespace Srvtools
         }
 
         ////2017/12/6 JAY
+        private QWhere _QWhere1;       
+        [Category("TTRI")]
+        public string QWhere1_LabelName
+        {
+            get { return _QWhere1.LabelName; }
+            set { _QWhere1.LabelName = value; }
+        }
+
+        [Category("TTRI")]
+        public string QWhere1_FieldName
+        {
+            get { return _QWhere1.FieldName; }
+            set { _QWhere1.FieldName = value; }
+        }
+        private QWhere _QWhere2;       
+        [Category("TTRI")]
+        public string QWhere2_LabelName
+        {
+            get { return _QWhere2.LabelName; }
+            set { _QWhere2.LabelName = value; }
+        }
+
+        [Category("TTRI")]
+        public string QWhere2_FieldName
+        {
+            get { return _QWhere2.FieldName; }
+            set { _QWhere2.FieldName = value; }
+        }
+        private QWhere _QWhere3;
+        [Category("TTRI")]
+        public string QWhere3_LabelName
+        {
+            get { return _QWhere3.LabelName; }
+            set { _QWhere3.LabelName = value; }
+        }
+        [Category("TTRI")]
+        public string QWhere3_FieldName
+        {
+            get { return _QWhere3.FieldName; }
+            set { _QWhere3.FieldName = value; }
+        }
 
         public string GetDataMember()
         {
